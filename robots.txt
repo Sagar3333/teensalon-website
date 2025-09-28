@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://teenssalon.com/sitemap.xml
+Sitemap: http://teensalsi.com/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1
@@ -42,4 +42,4 @@ Allow: /sitemap.xml
 Allow: /robots.txt
 
 # Host
-Host: https://teenssalon.com
+Host: http://teensalsi.com

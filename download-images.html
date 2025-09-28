@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeenSalon Image Download Guide</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e91e63, #f06292);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            color: #e91e63;
+            border-bottom: 3px solid #e91e63;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .image-item {
+            border: 2px dashed #e91e63;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .image-item h4 {
+            color: #e91e63;
+            margin-bottom: 10px;
+        }
+
+        .image-item p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #e91e63, #f06292);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .instructions h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .justdial-link {
+            background: #ff6b35;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .justdial-link:hover {
+            transform: translateY(-3px);
+            color: white;
+        }
+
+        .file-structure {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>TeenSalon Image Download Guide</h1>
+        <p>Download authentic images from the official JustDial page</p>
+        <a href="https://www.justdial.com/Greater-Noida/TEENS-SALON-Near-Hdfc-Bank-Alpha-2-Greater-Noida/011PXX11-XX11-240710221601-K4T5_BZDET" target="_blank" class="justdial-link">
+            <i class="fas fa-external-link-alt"></i> Visit Official JustDial Page
+        </a>
+    </div>
+
+    <div class="section">
+        <h2>Step-by-Step Instructions</h2>
+        <div class="instructions">
+            <h3>📋 How to Download Images</h3>
+            <ol>
+                <li><strong>Visit the JustDial page</strong> using the link above</li>
+                <li><strong>Navigate to the Photos section</strong> on the JustDial listing</li>
+                <li><strong>Right-click on each image</strong> and select "Save image as..."</li>
+                <li><strong>Save images</strong> with the suggested filenames below</li>
+                <li><strong>Place images</strong> in the correct folders in your project</li>
+                <li><strong>Update the website</strong> - images will automatically load</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Required Images from JustDial</h2>
+        <div class="image-grid">
+            <div class="image-item">
+                <h4>Salon Interior</h4>
+                <p>Main salon view, reception area</p>
+                <p><strong>Save as:</strong> salon-interior.jpg</p>
+                <button class="download-btn" onclick="showInstructions('salon-interior')">Download Guide</button>
+            </div>
+
+            <div class="image-item">
+                <h4>Hair Styling</h4>
+                <p>Stylist working, hair cutting</p>
+                <p><strong>Save as:</strong> hair-styling-1.jpg</p>
+                <button class="download-btn" onclick="showInstructions('hair-styling')">Download Guide</button>
+            </div>
+
+            <div class="image-item">
+                <h4>Hair Coloring</h4>
+                <p>Color application, highlighting</p>
+                <p><strong>Save as:</strong> hair-coloring-1.jpg</p>
+                <button class="download-btn" onclick="showInstructions('hair-coloring')">Download Guide</button>
+            </div>
+
+            <div class="image-item">
+                <h4>Facial Treatment</h4>
+                <p>Facial process, skincare</p>
+                <p><strong>Save as:</strong> facial-treatment-1.jpg</p>
+                <button class="download-btn" onclick="showInstructions('facial')">Download Guide</button>
+            </div>
+
+            <div class="image-item">
+                <h4>Nail Art</h4>
+                <p>Nail designs, manicure</p>
+                <p><strong>Save as:</strong> nail-art-1.jpg</p>
+                <button class="download-btn" onclick="showInstructions('nail-art')">Download Guide</button>
+            </div>
+
+            <div class="image-item">
+                <h4>Bridal Makeup</h4>
+                <p>Bridal looks, special occasions</p>
+                <p><strong>Save as:</strong> bridal-makeup-1.jpg</p>
+                <button class="download-btn" onclick="showInstructions('bridal')">Download Guide</button>
+            </div>
+
+            <div class="image-item">
+                <h4>Mehendi Design</h4>
+                <p>Henna patterns, hand art</p>
+                <p><strong>Save as:</strong> mehendi-design-1.jpg</p>
+                <button class="download-btn" onclick="showInstructions('mehendi')">Download Guide</button>
+            </div>
+
+            <div class="image-item">
+                <h4>Hair Spa</h4>
+                <p>Relaxation, hair treatment</p>
+                <p><strong>Save as:</strong> hair-spa-1.jpg</p>
+                <button class="download-btn" onclick="showInstructions('hair-spa')">Download Guide</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>File Structure</h2>
+        <div class="file-structure">
+images/
+├── gallery/
+│   ├── salon-interior-1.jpg     ← Main salon photo
+│   ├── hair-styling-1.jpg       ← Hair cutting/styling
+│   ├── hair-coloring-1.jpg      ← Color application
+│   ├── facial-treatment-1.jpg   ← Facial process
+│   ├── nail-art-1.jpg          ← Nail designs
+│   ├── bridal-makeup-1.jpg      ← Bridal looks
+│   ├── mehendi-design-1.jpg     ← Henna patterns
+│   └── hair-spa-1.jpg          ← Hair spa treatment
+├── hero/
+│   └── salon-interior.jpg       ← Hero section image
+├── services/
+│   ├── haircut-service.jpg      ← Service photos
+│   ├── coloring-service.jpg
+│   ├── facial-service.jpg
+│   ├── nail-service.jpg
+│   └── bridal-service.jpg
+└── team/
+    ├── stylist-1.jpg            ← Team member photos
+    ├── stylist-2.jpg
+    ├── stylist-3.jpg
+    └── stylist-4.jpg
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Quick Implementation</h2>
+        <div class="highlight">
+            <h3>🚀 After Downloading Images:</h3>
+            <ol>
+                <li><strong>Create folders:</strong> Make sure the <code>images/</code> folder structure exists</li>
+                <li><strong>Place images:</strong> Put downloaded images in the correct folders</li>
+                <li><strong>Test website:</strong> Open <code>index.html</code> in your browser</li>
+                <li><strong>Images will load automatically</strong> - no code changes needed!</li>
+            </ol>
+        </div>
+
+        <div class="highlight">
+            <h3>📱 Mobile Images:</h3>
+            <p>For best results, download images in these sizes:</p>
+            <ul>
+                <li><strong>Gallery images:</strong> 800x800 pixels</li>
+                <li><strong>Hero images:</strong> 1920x1080 pixels</li>
+                <li><strong>Service images:</strong> 400x400 pixels</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Alternative Options</h2>
+        <p>If you can't access the JustDial images:</p>
+        <ul>
+            <li><strong>Contact the salon directly</strong> for official photos</li>
+            <li><strong>Use professional stock photos</strong> from Unsplash or Pexels</li>
+            <li><strong>Keep the placeholder system</strong> - it looks professional</li>
+            <li><strong>Take your own photos</strong> if you visit the salon</li>
+        </ul>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script>
+        function showInstructions(type) {
+            const instructions = {
+                'salon-interior': 'Look for photos of the main salon area, reception desk, or overall interior view.',
+                'hair-styling': 'Find images of stylists cutting hair, using scissors, or styling tools.',
+                'hair-coloring': 'Look for photos showing color application, highlighting, or color mixing.',
+                'facial': 'Find images of facial treatments, skincare products, or spa equipment.',
+                'nail-art': 'Look for photos of nail designs, manicure process, or nail art examples.',
+                'bridal': 'Find images of bridal makeup, special occasion looks, or wedding preparations.',
+                'mehendi': 'Look for photos of henna designs, hand art, or traditional patterns.',
+                'hair-spa': 'Find images of hair spa treatments, relaxation areas, or hair care products.'
+            };
+            
+            alert(`Download Instructions for ${type}:\n\n${instructions[type]}\n\n1. Right-click on the image\n2. Select "Save image as..."\n3. Use the suggested filename\n4. Save to the correct folder`);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+Gallery Images Placeholder
+
+This folder should contain the following images:
+
+1. hair-styling-1.jpg - Professional hair styling examples
+2. hair-coloring-1.jpg - Hair coloring transformations  
+3. facial-treatment-1.jpg - Facial treatment results
+4. nail-art-1.jpg - Creative nail art designs
+5. bridal-makeup-1.jpg - Bridal makeup transformations
+6. eyebrow-design-1.jpg - Eyebrow shaping and design
+7. mehendi-design-1.jpg - Traditional and modern mehendi patterns
+8. hair-spa-1.jpg - Hair spa treatment process
+
+Image specifications:
+- Format: JPG
+- Size: 800x800 pixels minimum
+- File size: Under 500KB each
+- Quality: High resolution for web
+
+Note: The website includes fallback placeholders that will display if images are not found.

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeenSalon Loader Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .demo-container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .demo-title {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .demo-description {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #e91e63, #f06292);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(233, 30, 99, 0.4);
+        }
+
+        /* TeenSalon Loader Styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .loader-logo {
+            margin-bottom: 3rem;
+        }
+
+        .logo-text {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        .logo-subtitle {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .loader-animation {
+            position: relative;
+            height: 120px;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Scissors Animation */
+        .scissors {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            animation: scissorCut 2s ease-in-out infinite;
+        }
+
+        .scissor-blade {
+            position: absolute;
+            width: 30px;
+            height: 4px;
+            background: #000;
+            border-radius: 2px;
+            top: 50%;
+            transform-origin: right center;
+        }
+
+        .scissor-blade.left {
+            left: 0;
+            transform: translateY(-50%) rotate(-15deg);
+            animation: leftBlade 2s ease-in-out infinite;
+        }
+
+        .scissor-blade.right {
+            right: 0;
+            transform: translateY(-50%) rotate(15deg);
+            animation: rightBlade 2s ease-in-out infinite;
+        }
+
+        .scissor-handle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Hair Strands Animation */
+        .hair-strands {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .strand {
+            position: absolute;
+            width: 2px;
+            background: #000;
+            border-radius: 1px;
+            opacity: 0;
+            animation: hairFall 2s ease-in-out infinite;
+        }
+
+        .strand-1 {
+            height: 40px;
+            left: 20%;
+            top: 10%;
+            animation-delay: 0.2s;
+        }
+
+        .strand-2 {
+            height: 35px;
+            left: 35%;
+            top: 5%;
+            animation-delay: 0.4s;
+        }
+
+        .strand-3 {
+            height: 45px;
+            left: 50%;
+            top: 8%;
+            animation-delay: 0.6s;
+        }
+
+        .strand-4 {
+            height: 30px;
+            left: 65%;
+            top: 12%;
+            animation-delay: 0.8s;
+        }
+
+        .strand-5 {
+            height: 38px;
+            left: 80%;
+            top: 6%;
+            animation-delay: 1s;
+        }
+
+        /* Progress Bar */
+        .loader-progress {
+            width: 100%;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #000 0%, #333 50%, #000 100%);
+            border-radius: 2px;
+            width: 0%;
+            animation: progressLoad 3s ease-in-out infinite;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 300;
+            letter-spacing: 1px;
+            animation: textPulse 1.5s ease-in-out infinite;
+        }
+
+        /* Keyframe Animations */
+        @keyframes logoGlow {
+            0% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            100% {
+                text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        @keyframes scissorCut {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(5deg);
+            }
+        }
+
+        @keyframes leftBlade {
+            0%, 100% {
+                transform: translateY(-50%) rotate(-15deg);
+            }
+            50% {
+                transform: translateY(-50%) rotate(-25deg);
+            }
+        }
+
+        @keyframes rightBlade {
+            0%, 100% {
+                transform: translateY(-50%) rotate(15deg);
+            }
+            50% {
+                transform: translateY(-50%) rotate(25deg);
+            }
+        }
+
+        @keyframes hairFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                opacity: 0.7;
+                transform: translateY(20px) rotate(5deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(40px) rotate(10deg);
+            }
+        }
+
+        @keyframes progressLoad {
+            0% {
+                width: 0%;
+            }
+            50% {
+                width: 70%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes textPulse {
+            0%, 100% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo-text {
+                font-size: 2.5rem;
+            }
+            
+            .loader-animation {
+                height: 100px;
+            }
+            
+            .scissors {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">TeenSalon Loader Demo</h1>
+        <p class="demo-description">
+            Experience our custom black and white loader animation featuring animated scissors cutting hair strands. 
+            This elegant loader represents the essence of our beauty salon with smooth animations and professional design.
+        </p>
+        <button class="demo-button" onclick="showLoader()">Show Loader</button>
+        <button class="demo-button" onclick="showLoaderWithDelay()">Show Loader (3s)</button>
+    </div>
+
+    <!-- Loader -->
+    <div id="loader" class="loader hidden">
+        <div class="loader-container">
+            <div class="loader-logo">
+                <div class="logo-text">TeenSalon</div>
+                <div class="logo-subtitle">Beauty & Style</div>
+            </div>
+            <div class="loader-animation">
+                <div class="scissors">
+                    <div class="scissor-blade left"></div>
+                    <div class="scissor-blade right"></div>
+                    <div class="scissor-handle"></div>
+                </div>
+                <div class="hair-strands">
+                    <div class="strand strand-1"></div>
+                    <div class="strand strand-2"></div>
+                    <div class="strand strand-3"></div>
+                    <div class="strand strand-4"></div>
+                    <div class="strand strand-5"></div>
+                </div>
+            </div>
+            <div class="loader-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-text">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLoader() {
+            const loader = document.getElementById('loader');
+            const progressFill = document.querySelector('.progress-fill');
+            const progressText = document.querySelector('.progress-text');
+            
+            loader.classList.remove('hidden');
+            
+            // Reset progress
+            progressFill.style.width = '0%';
+            progressText.textContent = 'Loading...';
+            
+            // Simulate loading progress
+            let progress = 0;
+            const loadingMessages = [
+                'Loading...',
+                'Preparing your beauty experience...',
+                'Setting up our services...',
+                'Almost ready...',
+                'Welcome to TeenSalon!'
+            ];
+            
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    
+                    // Update final message
+                    progressText.textContent = loadingMessages[4];
+                    
+                    // Hide loader after a short delay
+                    setTimeout(() => {
+                        hideLoader();
+                    }, 1000);
+                } else {
+                    // Update progress bar
+                    progressFill.style.width = progress + '%';
+                    
+                    // Update loading message based on progress
+                    const messageIndex = Math.floor((progress / 100) * (loadingMessages.length - 1));
+                    progressText.textContent = loadingMessages[messageIndex];
+                }
+            }, 200);
+        }
+
+        function showLoaderWithDelay() {
+            showLoader();
+            
+            // Override the automatic hiding to show for 3 seconds
+            setTimeout(() => {
+                const progressFill = document.querySelector('.progress-fill');
+                const progressText = document.querySelector('.progress-text');
+                
+                progressFill.style.width = '100%';
+                progressText.textContent = 'Welcome to TeenSalon!';
+                
+                setTimeout(() => {
+                    hideLoader();
+                }, 1000);
+            }, 3000);
+        }
+
+        function hideLoader() {
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.classList.add('hidden');
+            }
+        }
+
+        // Auto-show loader on page load for demo
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                showLoader();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

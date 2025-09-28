@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="60" height="60">
+  <defs>
+    <linearGradient id="eyeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e91e63;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff4081;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="45" fill="#f8f9fa" stroke="#e91e63" stroke-width="2"/>
+  <ellipse cx="50" cy="50" rx="20" ry="12" fill="url(#eyeGradient)" opacity="0.8"/>
+  <circle cx="50" cy="50" r="8" fill="#fff"/>
+  <circle cx="50" cy="50" r="4" fill="#e91e63"/>
+  <path d="M30 40 Q35 35 40 40" stroke="#e91e63" stroke-width="2" fill="none"/>
+  <path d="M60 40 Q65 35 70 40" stroke="#e91e63" stroke-width="2" fill="none"/>
+  <path d="M35 35 L30 30 L25 35" stroke="#e91e63" stroke-width="2" fill="none"/>
+  <path d="M65 35 L70 30 L75 35" stroke="#e91e63" stroke-width="2" fill="none"/>
+</svg>

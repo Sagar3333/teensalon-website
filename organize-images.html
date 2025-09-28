@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeenSalon Image Organizer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #e91e63;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .progress-section {
+            margin: 30px 0;
+        }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #e91e63;
+        }
+
+        .progress-item.completed {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .progress-item h4 {
+            margin: 0;
+            color: #333;
+        }
+
+        .progress-item p {
+            margin: 5px 0 0 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .folder-structure {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .folder-structure .folder {
+            color: #4fd1c7;
+        }
+
+        .folder-structure .file {
+            color: #fbb6ce;
+        }
+
+        .folder-structure .completed {
+            color: #68d391;
+        }
+
+        .folder-structure .pending {
+            color: #fbb6ce;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .instructions h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #e91e63, #f06292);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checklist input[type="checkbox"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        .checklist label {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .checklist .completed {
+            text-decoration: line-through;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TeenSalon Image Organizer</h1>
+            <p>Track your progress downloading images from JustDial</p>
+        </div>
+
+        <div class="progress-section">
+            <h2>Download Progress</h2>
+            <div class="progress-item" id="salon-interior">
+                <div>
+                    <h4>Salon Interior</h4>
+                    <p>Main salon view, reception area</p>
+                </div>
+                <span class="status pending" id="status-salon-interior">Pending</span>
+            </div>
+
+            <div class="progress-item" id="hair-styling">
+                <div>
+                    <h4>Hair Styling</h4>
+                    <p>Stylist working, hair cutting</p>
+                </div>
+                <span class="status pending" id="status-hair-styling">Pending</span>
+            </div>
+
+            <div class="progress-item" id="hair-coloring">
+                <div>
+                    <h4>Hair Coloring</h4>
+                    <p>Color application, highlighting</p>
+                </div>
+                <span class="status pending" id="status-hair-coloring">Pending</span>
+            </div>
+
+            <div class="progress-item" id="facial-treatment">
+                <div>
+                    <h4>Facial Treatment</h4>
+                    <p>Facial process, skincare</p>
+                </div>
+                <span class="status pending" id="status-facial-treatment">Pending</span>
+            </div>
+
+            <div class="progress-item" id="nail-art">
+                <div>
+                    <h4>Nail Art</h4>
+                    <p>Nail designs, manicure</p>
+                </div>
+                <span class="status pending" id="status-nail-art">Pending</span>
+            </div>
+
+            <div class="progress-item" id="bridal-makeup">
+                <div>
+                    <h4>Bridal Makeup</h4>
+                    <p>Bridal looks, special occasions</p>
+                </div>
+                <span class="status pending" id="status-bridal-makeup">Pending</span>
+            </div>
+
+            <div class="progress-item" id="mehendi-design">
+                <div>
+                    <h4>Mehendi Design</h4>
+                    <p>Henna patterns, hand art</p>
+                </div>
+                <span class="status pending" id="status-mehendi-design">Pending</span>
+            </div>
+
+            <div class="progress-item" id="hair-spa">
+                <div>
+                    <h4>Hair Spa</h4>
+                    <p>Relaxation, hair treatment</p>
+                </div>
+                <span class="status pending" id="status-hair-spa">Pending</span>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Quick Checklist</h3>
+            <ul class="checklist">
+                <li>
+                    <input type="checkbox" id="check1" onchange="updateProgress()">
+                    <label for="check1">Visit the JustDial page</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check2" onchange="updateProgress()">
+                    <label for="check2">Create images folder structure</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check3" onchange="updateProgress()">
+                    <label for="check3">Download salon interior photo</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check4" onchange="updateProgress()">
+                    <label for="check4">Download hair styling photos</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check5" onchange="updateProgress()">
+                    <label for="check5">Download hair coloring photos</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check6" onchange="updateProgress()">
+                    <label for="check6">Download facial treatment photos</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check7" onchange="updateProgress()">
+                    <label for="check7">Download nail art photos</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check8" onchange="updateProgress()">
+                    <label for="check8">Download bridal makeup photos</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check9" onchange="updateProgress()">
+                    <label for="check9">Download mehendi design photos</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check10" onchange="updateProgress()">
+                    <label for="check10">Download hair spa photos</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="check11" onchange="updateProgress()">
+                    <label for="check11">Test the website with new images</label>
+                </li>
+            </ul>
+        </div>
+
+        <div class="folder-structure">
+<span class="folder">images/</span>
+├── <span class="folder">gallery/</span>
+│   ├── <span class="file" id="file-salon-interior">salon-interior-1.jpg</span>     ← <span id="status-file-salon-interior">Pending</span>
+│   ├── <span class="file" id="file-hair-styling">hair-styling-1.jpg</span>       ← <span id="status-file-hair-styling">Pending</span>
+│   ├── <span class="file" id="file-hair-coloring">hair-coloring-1.jpg</span>      ← <span id="status-file-hair-coloring">Pending</span>
+│   ├── <span class="file" id="file-facial-treatment">facial-treatment-1.jpg</span>   ← <span id="status-file-facial-treatment">Pending</span>
+│   ├── <span class="file" id="file-nail-art">nail-art-1.jpg</span>          ← <span id="status-file-nail-art">Pending</span>
+│   ├── <span class="file" id="file-bridal-makeup">bridal-makeup-1.jpg</span>      ← <span id="status-file-bridal-makeup">Pending</span>
+│   ├── <span class="file" id="file-mehendi-design">mehendi-design-1.jpg</span>     ← <span id="status-file-mehendi-design">Pending</span>
+│   └── <span class="file" id="file-hair-spa">hair-spa-1.jpg</span>          ← <span id="status-file-hair-spa">Pending</span>
+├── <span class="folder">hero/</span>
+│   └── <span class="file" id="file-hero">salon-interior.jpg</span>       ← <span id="status-file-hero">Pending</span>
+├── <span class="folder">services/</span>
+│   ├── <span class="file">haircut-service.jpg</span>      ← Optional
+│   ├── <span class="file">coloring-service.jpg</span>     ← Optional
+│   ├── <span class="file">facial-service.jpg</span>       ← Optional
+│   ├── <span class="file">nail-service.jpg</span>         ← Optional
+│   └── <span class="file">bridal-service.jpg</span>       ← Optional
+└── <span class="folder">team/</span>
+    ├── <span class="file">stylist-1.jpg</span>            ← Optional
+    ├── <span class="file">stylist-2.jpg</span>            ← Optional
+    ├── <span class="file">stylist-3.jpg</span>            ← Optional
+    └── <span class="file">stylist-4.jpg</span>            ← Optional
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="btn" onclick="openJustDial()">
+                <i class="fas fa-external-link-alt"></i> Open JustDial Page
+            </button>
+            <button class="btn btn-secondary" onclick="resetProgress()">
+                <i class="fas fa-refresh"></i> Reset Progress
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let completedCount = 0;
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    completedCount++;
+                    checkbox.nextElementSibling.classList.add('completed');
+                } else {
+                    checkbox.nextElementSibling.classList.remove('completed');
+                }
+            });
+
+            // Update progress items based on checkboxes
+            if (document.getElementById('check3').checked) {
+                markItemCompleted('salon-interior');
+            }
+            if (document.getElementById('check4').checked) {
+                markItemCompleted('hair-styling');
+            }
+            if (document.getElementById('check5').checked) {
+                markItemCompleted('hair-coloring');
+            }
+            if (document.getElementById('check6').checked) {
+                markItemCompleted('facial-treatment');
+            }
+            if (document.getElementById('check7').checked) {
+                markItemCompleted('nail-art');
+            }
+            if (document.getElementById('check8').checked) {
+                markItemCompleted('bridal-makeup');
+            }
+            if (document.getElementById('check9').checked) {
+                markItemCompleted('mehendi-design');
+            }
+            if (document.getElementById('check10').checked) {
+                markItemCompleted('hair-spa');
+            }
+
+            // Show completion message
+            if (completedCount === checkboxes.length) {
+                alert('🎉 Congratulations! You have completed all tasks. Your TeenSalon website is ready with authentic images!');
+            }
+        }
+
+        function markItemCompleted(itemId) {
+            const item = document.getElementById(itemId);
+            const status = document.getElementById(`status-${itemId}`);
+            const fileStatus = document.getElementById(`status-file-${itemId}`);
+            
+            item.classList.add('completed');
+            status.textContent = 'Completed';
+            status.className = 'status completed';
+            fileStatus.textContent = 'Completed';
+            fileStatus.className = 'completed';
+        }
+
+        function openJustDial() {
+            window.open('https://www.justdial.com/Greater-Noida/TEENS-SALON-Near-Hdfc-Bank-Alpha-2-Greater-Noida/011PXX11-XX11-240710221601-K4T5_BZDET', '_blank');
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress?')) {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                    checkbox.nextElementSibling.classList.remove('completed');
+                });
+
+                const progressItems = document.querySelectorAll('.progress-item');
+                progressItems.forEach(item => {
+                    item.classList.remove('completed');
+                    const status = item.querySelector('.status');
+                    status.textContent = 'Pending';
+                    status.className = 'status pending';
+                });
+
+                const fileStatuses = document.querySelectorAll('[id^="status-file-"]');
+                fileStatuses.forEach(status => {
+                    status.textContent = 'Pending';
+                    status.className = 'pending';
+                });
+            }
+        }
+
+        // Load saved progress
+        window.onload = function() {
+            const savedProgress = localStorage.getItem('teensalon-progress');
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                Object.keys(progress).forEach(key => {
+                    const checkbox = document.getElementById(key);
+                    if (checkbox) {
+                        checkbox.checked = progress[key];
+                        updateProgress();
+                    }
+                });
+            }
+        };
+
+        // Save progress
+        function saveProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const progress = {};
+            checkboxes.forEach(checkbox => {
+                progress[checkbox.id] = checkbox.checked;
+            });
+            localStorage.setItem('teensalon-progress', JSON.stringify(progress));
+        }
+
+        // Save progress when checkboxes change
+        document.addEventListener('change', saveProgress);
+    </script>
+</body>
+</html>

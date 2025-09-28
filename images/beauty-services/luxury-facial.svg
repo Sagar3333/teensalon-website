@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="luxuryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e91e63;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#9c27b0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#673ab7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffb300;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="#f8f9fa"/>
+  
+  <!-- Luxury facial setup -->
+  <ellipse cx="200" cy="150" rx="80" ry="100" fill="#fff3e0" stroke="url(#luxuryGradient)" stroke-width="3"/>
+  
+  <!-- Face -->
+  <ellipse cx="200" cy="150" rx="60" ry="75" fill="#ffcdd2" opacity="0.8"/>
+  
+  <!-- Eyes -->
+  <ellipse cx="180" cy="130" rx="8" ry="6" fill="#fff"/>
+  <ellipse cx="220" cy="130" rx="8" ry="6" fill="#fff"/>
+  <circle cx="180" cy="130" r="3" fill="#e91e63"/>
+  <circle cx="220" cy="130" r="3" fill="#e91e63"/>
+  
+  <!-- Eyebrows -->
+  <path d="M170 120 Q180 115 190 120" stroke="#8d6e63" stroke-width="3" fill="none"/>
+  <path d="M210 120 Q220 115 230 120" stroke="#8d6e63" stroke-width="3" fill="none"/>
+  
+  <!-- Nose -->
+  <ellipse cx="200" cy="150" rx="3" ry="8" fill="#ffab91"/>
+  
+  <!-- Mouth -->
+  <path d="M190 170 Q200 175 210 170" stroke="#e91e63" stroke-width="2" fill="none"/>
+  
+  <!-- Spa elements -->
+  <circle cx="120" cy="80" r="15" fill="url(#goldGradient)" opacity="0.7"/>
+  <circle cx="280" cy="80" r="15" fill="url(#goldGradient)" opacity="0.7"/>
+  <circle cx="120" cy="220" r="15" fill="url(#goldGradient)" opacity="0.7"/>
+  <circle cx="280" cy="220" r="15" fill="url(#goldGradient)" opacity="0.7"/>
+  
+  <!-- Steam effects -->
+  <path d="M180 100 Q185 90 190 100 Q195 90 200 100" stroke="#4fc3f7" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M200 100 Q205 90 210 100 Q215 90 220 100" stroke="#4fc3f7" stroke-width="2" fill="none" opacity="0.6"/>
+  
+  <!-- Luxury text -->
+  <text x="200" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#e91e63">Luxury Facial Treatment</text>
+</svg>

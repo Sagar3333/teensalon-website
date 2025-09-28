@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="hairGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8d6e63;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#5d4037;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3e2723;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="toolsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e91e63;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c2185b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="#f8f9fa"/>
+  
+  <!-- Head -->
+  <ellipse cx="200" cy="150" rx="60" ry="80" fill="#ffcdd2" stroke="url(#toolsGradient)" stroke-width="3"/>
+  
+  <!-- Hair -->
+  <path d="M140 100 Q160 80 180 90 Q200 85 220 90 Q240 80 260 100 Q250 120 230 130 Q210 125 200 130 Q190 125 170 130 Q150 120 140 100" 
+        fill="url(#hairGradient)" opacity="0.9"/>
+  
+  <!-- Face details -->
+  <ellipse cx="180" cy="140" rx="8" ry="6" fill="#fff"/>
+  <ellipse cx="220" cy="140" rx="8" ry="6" fill="#fff"/>
+  <circle cx="180" cy="140" r="3" fill="#e91e63"/>
+  <circle cx="220" cy="140" r="3" fill="#e91e63"/>
+  
+  <!-- Nose -->
+  <ellipse cx="200" cy="160" rx="2" ry="6" fill="#ffab91"/>
+  
+  <!-- Mouth -->
+  <path d="M190 175 Q200 180 210 175" stroke="#e91e63" stroke-width="2" fill="none"/>
+  
+  <!-- Hair styling tools -->
+  <path d="M80 200 L100 180" stroke="url(#toolsGradient)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M320 200 L300 180" stroke="url(#toolsGradient)" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Hair dryer -->
+  <ellipse cx="100" cy="180" rx="15" ry="8" fill="#e91e63"/>
+  <rect x="85" y="176" width="30" height="8" fill="#c2185b"/>
+  
+  <!-- Curling iron -->
+  <ellipse cx="300" cy="180" rx="8" ry="15" fill="#9c27b0"/>
+  <rect x="296" y="165" width="8" height="30" fill="#7b1fa2"/>
+  
+  <!-- Hair products -->
+  <rect x="50" y="220" width="15" height="30" fill="#4fc3f7" rx="3"/>
+  <rect x="335" y="220" width="15" height="30" fill="#ff9800" rx="3"/>
+  
+  <!-- Luxury text -->
+  <text x="200" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#e91e63">Professional Hair Styling</text>
+</svg>

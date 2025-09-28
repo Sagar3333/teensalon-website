@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TeenSalon - Professional Beauty Salon Website
 
 A modern, responsive website for TeenSalon, a premier beauty salon in Greater Noida offering professional hair styling, bridal makeup, mehendi, facial treatments, and nail art services.
@@ -77,3 +78,7 @@ This website is deployed on GitHub Pages with a custom domain (teensalon.com) fo
 ---
 
 **TeenSalon** - Where Beauty Meets Excellence ✨
+=======
+# teensalon-website
+TeenSalon - Professional Beauty Salon Website
+>>>>>>> 7a2b42de19dbff75bb35166d49c2f600307a11d5

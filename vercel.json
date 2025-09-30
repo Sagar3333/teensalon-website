@@ -1,18 +1,18 @@
 {
   "redirects": [
     {
-      "source": "http://teensalin.com/(.*)",
-      "destination": "https://teensalin.com/$1",
+      "source": "http://teensalsi.com/(.*)",
+      "destination": "https://teensalsi.com/$1",
       "permanent": true
     },
     {
-      "source": "http://www.teensalin.com/(.*)",
-      "destination": "https://teensalin.com/$1",
+      "source": "http://www.teensalsi.com/(.*)",
+      "destination": "https://teensalsi.com/$1",
       "permanent": true
     },
     {
-      "source": "https://www.teensalin.com/(.*)",
-      "destination": "https://teensalin.com/$1",
+      "source": "https://www.teensalsi.com/(.*)",
+      "destination": "https://teensalsi.com/$1",
       "permanent": true
     }
   ],

@@ -1,13 +1,13 @@
-# Netlify Redirects for TeenSalin Website
+# Netlify Redirects for TeenSalsi Website
 # Force HTTPS redirection
 
 # Redirect HTTP to HTTPS
-http://teensalin.com/* https://teensalin.com/:splat 301!
-http://www.teensalin.com/* https://teensalin.com/:splat 301!
-https://www.teensalin.com/* https://teensalin.com/:splat 301!
+http://teensalsi.com/* https://teensalsi.com/:splat 301!
+http://www.teensalsi.com/* https://teensalsi.com/:splat 301!
+https://www.teensalsi.com/* https://teensalsi.com/:splat 301!
 
 # Redirect all traffic to HTTPS
-/* https://teensalin.com/:splat 301!
+/* https://teensalsi.com/:splat 301!
 
 # SPA fallback for client-side routing
 /* /index.html 200

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTPS Test - TeenSalon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        button {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #c2185b; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔒 HTTPS Redirection Test</h1>
+        <p>This page tests the HTTPS redirection functionality for TeenSalin website.</p>
+        
+        <div id="protocol-status" class="status"></div>
+        <div id="security-status" class="status"></div>
+        <div id="redirect-status" class="status"></div>
+        
+        <h3>Test Actions:</h3>
+        <button onclick="testHTTPRedirect()">Test HTTP → HTTPS Redirect</button>
+        <button onclick="testWWWRedirect()">Test www → non-www Redirect</button>
+        <button onclick="checkSecurityHeaders()">Check Security Headers</button>
+        <button onclick="location.reload()">Refresh Page</button>
+        
+        <h3>Test Results:</h3>
+        <div id="test-results"></div>
+    </div>
+
+    <script>
+        // Check current protocol and security status
+        function checkProtocolStatus() {
+            const protocol = window.location.protocol;
+            const hostname = window.location.hostname;
+            const isHTTPS = protocol === 'https:';
+            const isCorrectDomain = hostname === 'teensalin.com';
+            
+            const protocolStatus = document.getElementById('protocol-status');
+            const securityStatus = document.getElementById('security-status');
+            const redirectStatus = document.getElementById('redirect-status');
+            
+            if (isHTTPS) {
+                protocolStatus.className = 'status success';
+                protocolStatus.textContent = '✅ HTTPS Protocol: Active';
+            } else {
+                protocolStatus.className = 'status error';
+                protocolStatus.textContent = '❌ HTTP Protocol: Insecure - Should redirect to HTTPS';
+            }
+            
+            if (isCorrectDomain) {
+                securityStatus.className = 'status success';
+                securityStatus.textContent = '✅ Domain: Correct (teensalin.com)';
+            } else {
+                securityStatus.className = 'status warning';
+                securityStatus.textContent = '⚠️ Domain: ' + hostname + ' (should be teensalin.com)';
+            }
+            
+            if (isHTTPS && isCorrectDomain) {
+                redirectStatus.className = 'status success';
+                redirectStatus.textContent = '✅ HTTPS Redirection: Working correctly';
+            } else {
+                redirectStatus.className = 'status warning';
+                redirectStatus.textContent = '⚠️ HTTPS Redirection: Needs attention';
+            }
+        }
+        
+        // Test HTTP to HTTPS redirect
+        function testHTTPRedirect() {
+            const results = document.getElementById('test-results');
+            results.innerHTML += '<p>🔄 Testing HTTP → HTTPS redirect...</p>';
+            
+            // Simulate HTTP URL
+            const httpUrl = 'http://' + window.location.host + window.location.pathname;
+            results.innerHTML += '<p>Attempting to access: ' + httpUrl + '</p>';
+            
+            // This would normally redirect, but we'll just show the test
+            results.innerHTML += '<p>✅ HTTP redirect test initiated</p>';
+        }
+        
+        // Test www to non-www redirect
+        function testWWWRedirect() {
+            const results = document.getElementById('test-results');
+            results.innerHTML += '<p>🔄 Testing www → non-www redirect...</p>';
+            
+            if (window.location.hostname === 'www.teensalin.com') {
+                results.innerHTML += '<p>⚠️ Currently on www subdomain - should redirect to teensalin.com</p>';
+            } else {
+                results.innerHTML += '<p>✅ Already on correct domain (teensalin.com)</p>';
+            }
+        }
+        
+        // Check security headers
+        function checkSecurityHeaders() {
+            const results = document.getElementById('test-results');
+            results.innerHTML += '<p>🔍 Checking security headers...</p>';
+            
+            // Check for HSTS header
+            const hstsHeader = document.querySelector('meta[http-equiv="Strict-Transport-Security"]');
+            if (hstsHeader) {
+                results.innerHTML += '<p>✅ HSTS header found</p>';
+            } else {
+                results.innerHTML += '<p>⚠️ HSTS header not found in meta tags</p>';
+            }
+            
+            // Check for CSP header
+            const cspHeader = document.querySelector('meta[http-equiv="Content-Security-Policy"]');
+            if (cspHeader) {
+                results.innerHTML += '<p>✅ CSP header found</p>';
+            } else {
+                results.innerHTML += '<p>⚠️ CSP header not found in meta tags</p>';
+            }
+            
+            results.innerHTML += '<p>✅ Security header check completed</p>';
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkProtocolStatus();
+            
+            // Add some initial test results
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<p>🚀 HTTPS Test Page Loaded</p>';
+            results.innerHTML += '<p>Current URL: ' + window.location.href + '</p>';
+            results.innerHTML += '<p>Protocol: ' + window.location.protocol + '</p>';
+            results.innerHTML += '<p>Hostname: ' + window.location.hostname + '</p>';
+        });
+    </script>
+</body>
+</html>

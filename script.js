@@ -27,9 +27,9 @@ function enforceHTTPS() {
     }
     
     // Additional security checks
-    if (window.location.hostname === 'www.teensalin.com') {
+    if (window.location.hostname === 'www.teensalsi.com') {
         // Redirect www to non-www
-        const nonWwwUrl = 'https://teensalin.com' + window.location.pathname + window.location.search + window.location.hash;
+        const nonWwwUrl = 'https://teensalsi.com' + window.location.pathname + window.location.search + window.location.hash;
         window.location.replace(nonWwwUrl);
         return;
     }

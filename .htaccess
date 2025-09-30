@@ -10,7 +10,7 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Alternative method for HTTPS redirection
 RewriteCond %{SERVER_PORT} 80
-RewriteRule ^(.*)$ https://teensalin.com/$1 [R=301,L]
+RewriteRule ^(.*)$ https://teensalsi.com/$1 [R=301,L]
 
 # Security Headers
 <IfModule mod_headers.c>

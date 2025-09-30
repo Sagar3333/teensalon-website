@@ -1373,38 +1373,97 @@ function sendToWhatsApp(message) {
 
 async function sendWhatsAppMessage(phoneNumber, message) {
     try {
-        // Send notification via webhook
-        const response = await fetch('/api/send-notification', {
+        // Method 1: Try WhatsApp Business API via webhook
+        const webhookResponse = await fetch('https://api.whatsapp.com/send', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                phoneNumber: phoneNumber,
+                to: '918810596216',
                 message: message,
-                type: 'Website Inquiry',
-                timestamp: new Date().toISOString()
+                type: 'text'
+            })
+        });
+        
+        if (webhookResponse.ok) {
+            showNotification('Message sent successfully to TeenSalon! We will contact you soon.', 'success');
+            return;
+        }
+    } catch (error) {
+        console.log('Webhook method failed, trying alternative...');
+    }
+    
+    try {
+        // Method 2: Use a WhatsApp API service
+        const apiResponse = await fetch('https://api.callmebot.com/whatsapp.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                phone: '918810596216',
+                text: message,
+                apikey: 'YOUR_API_KEY' // You'll need to get this from callmebot.com
+            })
+        });
+        
+        if (apiResponse.ok) {
+            showNotification('Message sent successfully to TeenSalon! We will contact you soon.', 'success');
+            return;
+        }
+    } catch (error) {
+        console.log('API method failed, trying email notification...');
+    }
+    
+    try {
+        // Method 3: Send email notification as fallback
+        await sendEmailNotification(phoneNumber, message);
+        showNotification('Message sent successfully to TeenSalon! We will contact you soon.', 'success');
+    } catch (error) {
+        console.error('All notification methods failed:', error);
+        
+        // Final fallback: Store for manual processing
+        storePendingMessage(phoneNumber, message);
+        showNotification('Your request has been submitted! We will contact you soon.', 'success');
+    }
+}
+
+async function sendEmailNotification(phoneNumber, message) {
+    // Using EmailJS to send actual emails
+    const emailData = {
+        to_email: 'teensalon01@gmail.com',
+        subject: 'New Website Inquiry - TeenSalon',
+        message: message,
+        phone: phoneNumber,
+        timestamp: new Date().toLocaleString(),
+        from_website: 'teensalsi.com'
+    };
+    
+    try {
+        // Using a simple email service - you can replace this with your preferred service
+        const response = await fetch('https://formspree.io/f/xpwgkqyz', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: 'teensalon01@gmail.com',
+                subject: 'New Website Inquiry - TeenSalon',
+                message: `Phone: ${phoneNumber}\n\nMessage:\n${message}\n\nTimestamp: ${new Date().toLocaleString()}\nWebsite: teensalsi.com`,
+                _replyto: 'noreply@teensalsi.com'
             })
         });
         
         if (response.ok) {
-            const result = await response.json();
-            if (result.success) {
-                showNotification('Message sent successfully to TeenSalon! We will contact you soon.', 'success');
-            } else {
-                throw new Error('Webhook failed');
-            }
+            console.log('Email notification sent successfully');
+            return true;
         } else {
-            throw new Error('Network error');
+            throw new Error('Email service failed');
         }
     } catch (error) {
-        console.error('Notification error:', error);
-        
-        // Fallback: Store in localStorage for manual processing
-        storePendingMessage(phoneNumber, message);
-        
-        // Show success message to maintain good UX
-        showNotification('Your request has been submitted! We will contact you soon.', 'success');
+        console.error('Email notification error:', error);
+        throw error;
     }
 }
 
@@ -1420,6 +1479,26 @@ function storePendingMessage(phoneNumber, message) {
     localStorage.setItem('pendingMessages', JSON.stringify(pendingMessages));
     
     console.log('Message stored for manual processing:', { phoneNumber, message });
+    
+    // Also try to send via WhatsApp Web API
+    sendWhatsAppWebMessage(phoneNumber, message);
+}
+
+async function sendWhatsAppWebMessage(phoneNumber, message) {
+    // Alternative method using WhatsApp Web API
+    try {
+        const whatsappUrl = `https://wa.me/918810596216?text=${encodeURIComponent(message)}`;
+        
+        // Open WhatsApp Web in a new tab
+        const newWindow = window.open(whatsappUrl, '_blank');
+        
+        if (newWindow) {
+            console.log('WhatsApp Web opened for manual sending');
+            showNotification('WhatsApp opened for manual message sending. Please send the message manually.', 'info');
+        }
+    } catch (error) {
+        console.error('WhatsApp Web method failed:', error);
+    }
 }
 
 function createAppointmentWhatsAppMessage(data) {

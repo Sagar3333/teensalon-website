@@ -1,0 +1,46 @@
+# GitHub Pages Configuration for teensalsi.com
+# This file helps GitHub Pages understand your site structure
+
+# Site settings
+title: "TeenSalon - Best Beauty Salon in Greater Noida"
+description: "Professional beauty services in Greater Noida. Hair styling, bridal makeup, mehendi, facial treatments, and nail art."
+url: "https://teensalsi.com"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:categories/:year/:month/:day/:title/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+      title: "TeenSalon"
+      description: "Best Beauty Salon in Greater Noida"
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .gitignore
+  - .github

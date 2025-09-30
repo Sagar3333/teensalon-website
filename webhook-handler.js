@@ -10,8 +10,8 @@ app.use(express.json());
 // WhatsApp Business API integration
 const sendWhatsAppMessage = async (phoneNumber, message) => {
     // Using Twilio WhatsApp API (you'll need to set up Twilio account)
-    const accountSid = process.env.TWILIO_ACCOUNT_SID;
-    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const accountSid = AC841e6fec0abbc4351d6d539bbaef068a;
+    const authToken = 1fd339ca3e42fe53b3c47b28593bdde2;
     const client = require('twilio')(accountSid, authToken);
     
     try {

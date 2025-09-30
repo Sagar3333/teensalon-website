@@ -1373,8 +1373,34 @@ function sendToWhatsApp(message) {
 
 async function sendWhatsAppMessage(phoneNumber, message) {
     try {
-        // Method 1: Try WhatsApp Business API via webhook
-        const webhookResponse = await fetch('https://api.whatsapp.com/send', {
+        // Method 1: CallMeBot API for direct WhatsApp sending
+        const callMeBotResponse = await fetch('https://api.callmebot.com/whatsapp.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                phone: '918810596216',
+                text: message,
+                apikey: '1234567890' // Replace with your actual CallMeBot API key
+            })
+        });
+        
+        if (callMeBotResponse.ok) {
+            const responseText = await callMeBotResponse.text();
+            console.log('CallMeBot response:', responseText);
+            showNotification('WhatsApp message sent directly to TeenSalon! We will contact you soon.', 'success');
+            return;
+        } else {
+            throw new Error('CallMeBot API failed');
+        }
+    } catch (error) {
+        console.log('CallMeBot method failed, trying alternative...');
+    }
+    
+    try {
+        // Method 2: Alternative WhatsApp API service
+        const alternativeResponse = await fetch('https://api.whatsapp.com/send', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1386,34 +1412,12 @@ async function sendWhatsAppMessage(phoneNumber, message) {
             })
         });
         
-        if (webhookResponse.ok) {
-            showNotification('Message sent successfully to TeenSalon! We will contact you soon.', 'success');
+        if (alternativeResponse.ok) {
+            showNotification('WhatsApp message sent directly to TeenSalon! We will contact you soon.', 'success');
             return;
         }
     } catch (error) {
-        console.log('Webhook method failed, trying alternative...');
-    }
-    
-    try {
-        // Method 2: Use a WhatsApp API service
-        const apiResponse = await fetch('https://api.callmebot.com/whatsapp.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                phone: '918810596216',
-                text: message,
-                apikey: 'YOUR_API_KEY' // You'll need to get this from callmebot.com
-            })
-        });
-        
-        if (apiResponse.ok) {
-            showNotification('Message sent successfully to TeenSalon! We will contact you soon.', 'success');
-            return;
-        }
-    } catch (error) {
-        console.log('API method failed, trying email notification...');
+        console.log('Alternative API method failed, trying email...');
     }
     
     try {

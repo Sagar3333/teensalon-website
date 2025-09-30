@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- HTTPS Enforcement -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload">
+    
     <!-- Primary Meta Tags -->
     <title>TeenSalon - Best Beauty Salon in Greater Noida | Hair Styling, Makeup, Mehendi</title>
     <meta name="title" content="TeenSalon - Best Beauty Salon in Greater Noida | Hair Styling, Makeup, Mehendi">
@@ -15,7 +20,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://teenssalon.com">
+    <link rel="canonical" href="https://teensalin.com">
+    
+    <!-- HTTPS Redirect Script -->
+    <script>
+        // Force HTTPS redirection
+        if (location.protocol !== 'https:') {
+            location.replace('https:' + window.location.href.substring(window.location.protocol.length));
+        }
+    </script>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -31,19 +44,19 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://teenssalon.com">
+    <meta property="og:url" content="https://teensalin.com">
     <meta property="og:title" content="TeenSalon - Best Beauty Salon in Greater Noida">
     <meta property="og:description" content="Professional beauty services in Greater Noida. Hair styling, bridal makeup, mehendi, facial treatments, and nail art. Book your appointment today!">
-    <meta property="og:image" content="https://teenssalon.com/images/hero/salon-interior.jpg">
+    <meta property="og:image" content="https://teensalin.com/images/hero/salon-interior.jpg">
     <meta property="og:site_name" content="TeenSalon">
     <meta property="og:locale" content="en_IN">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://teenssalon.com">
+    <meta property="twitter:url" content="https://teensalin.com">
     <meta property="twitter:title" content="TeenSalon - Best Beauty Salon in Greater Noida">
     <meta property="twitter:description" content="Professional beauty services in Greater Noida. Hair styling, bridal makeup, mehendi, facial treatments, and nail art.">
-    <meta property="twitter:image" content="https://teenssalon.com/images/hero/salon-interior.jpg">
+    <meta property="twitter:image" content="https://teensalin.com/images/hero/salon-interior.jpg">
     
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="IN-UP">
@@ -98,9 +111,9 @@
         "@type": "BeautySalon",
         "name": "TeenSalon",
         "description": "Premier beauty salon in Greater Noida offering professional hair styling, bridal makeup, mehendi, facial treatments, and nail art services.",
-        "url": "https://teenssalon.com",
-        "logo": "https://teenssalon.com/images/logo.png",
-        "image": "https://teenssalon.com/images/hero/salon-interior.jpg",
+        "url": "https://teensalin.com",
+        "logo": "https://teensalin.com/images/logo.png",
+        "image": "https://teensalin.com/images/hero/salon-interior.jpg",
         "telephone": "+91-8810596216",
         "email": "teensalon01@gmail.com",
         "address": {
@@ -1297,7 +1310,7 @@
                         <a href="https://www.facebook.com/share/17Gm1HpMca/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
                         <a href="https://www.twitter.com/teenssalon" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                         <a href="https://www.youtube.com/teenssalon" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                        <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://wa.me/918810596216" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">

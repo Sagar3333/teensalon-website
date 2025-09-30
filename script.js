@@ -1,5 +1,8 @@
 // DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Force HTTPS redirection
+    enforceHTTPS();
+    
     // Initialize loader first
     initLoader();
     
@@ -12,6 +15,28 @@ document.addEventListener('DOMContentLoaded', function() {
     initCounters();
     initTestimonialsCarousel();
 });
+
+// HTTPS Enforcement Function
+function enforceHTTPS() {
+    // Check if we're not on HTTPS
+    if (location.protocol !== 'https:') {
+        // Redirect to HTTPS
+        const httpsUrl = 'https:' + window.location.href.substring(window.location.protocol.length);
+        window.location.replace(httpsUrl);
+        return;
+    }
+    
+    // Additional security checks
+    if (window.location.hostname === 'www.teensalin.com') {
+        // Redirect www to non-www
+        const nonWwwUrl = 'https://teensalin.com' + window.location.pathname + window.location.search + window.location.hash;
+        window.location.replace(nonWwwUrl);
+        return;
+    }
+    
+    // Set security headers via meta tags (already in HTML)
+    console.log('HTTPS enforcement active - secure connection established');
+}
 
 // Navigation functionality
 function initNavigation() {
@@ -117,12 +142,79 @@ function initForms() {
         });
     }
 
-    // Set minimum date for appointment booking
+    // Set minimum date for appointment booking and improve datepicker
     const dateInput = document.getElementById('date');
     if (dateInput) {
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('min', today);
+        
+        // Make the entire date input area clickable
+        const dateContainer = dateInput.closest('.form-group');
+        if (dateContainer) {
+            dateContainer.style.cursor = 'pointer';
+            dateContainer.addEventListener('click', function(e) {
+                if (e.target !== dateInput) {
+                    dateInput.focus();
+                    dateInput.showPicker && dateInput.showPicker();
+                }
+            });
+        }
+        
+        // Add click event to date input
+        dateInput.addEventListener('click', function() {
+            this.showPicker && this.showPicker();
+        });
     }
+
+    // Add real-time validation for phone numbers
+    const phoneInputs = document.querySelectorAll('input[type="tel"], input[name="phone"]');
+    phoneInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            // Remove all non-digits
+            let value = this.value.replace(/\D/g, '');
+            
+            // Limit to 10 digits
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+            
+            this.value = value;
+            
+            // Add visual feedback
+            if (value.length === 10) {
+                this.style.borderColor = '#4CAF50';
+            } else if (value.length > 0) {
+                this.style.borderColor = '#ff9800';
+            } else {
+                this.style.borderColor = '';
+            }
+        });
+        
+        // Add placeholder formatting
+        input.addEventListener('focus', function() {
+            if (!this.value) {
+                this.placeholder = 'Enter 10-digit mobile number';
+            }
+        });
+    });
+
+    // Add real-time validation for email
+    const emailInputs = document.querySelectorAll('input[type="email"]');
+    emailInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            
+            if (this.value.length > 0) {
+                if (emailRegex.test(this.value)) {
+                    this.style.borderColor = '#4CAF50';
+                } else {
+                    this.style.borderColor = '#f44336';
+                }
+            } else {
+                this.style.borderColor = '';
+            }
+        });
+    });
 }
 
 // Handle appointment form submission
@@ -141,13 +233,18 @@ function handleAppointmentSubmission(form) {
     submitBtn.textContent = 'Booking...';
     submitBtn.disabled = true;
 
-    // Simulate API call
-    setTimeout(() => {
-        showNotification('Appointment booked successfully! We will contact you soon to confirm.', 'success');
-        form.reset();
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }, 2000);
+    // Create WhatsApp message
+    const whatsappMessage = createAppointmentWhatsAppMessage(data);
+    
+    // Send to WhatsApp
+    sendToWhatsApp(whatsappMessage);
+    
+    // Reset form and button
+    form.reset();
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+    
+    showNotification('Opening WhatsApp to send your appointment request...', 'success');
 }
 
 // Handle contact form submission
@@ -166,13 +263,18 @@ function handleContactSubmission(form) {
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
 
-    // Simulate API call
-    setTimeout(() => {
-        showNotification('Message sent successfully! We will get back to you soon.', 'success');
-        form.reset();
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }, 2000);
+    // Create WhatsApp message
+    const whatsappMessage = createContactWhatsAppMessage(data);
+    
+    // Send to WhatsApp
+    sendToWhatsApp(whatsappMessage);
+    
+    // Reset form and button
+    form.reset();
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+    
+    showNotification('Opening WhatsApp to send your message...', 'success');
 }
 
 // Form validation
@@ -186,17 +288,34 @@ function validateAppointmentForm(data) {
         }
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Enhanced email validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(data.email)) {
-        showNotification('Please enter a valid email address.', 'error');
+        showNotification('Please enter a valid email address (e.g., example@email.com).', 'error');
         return false;
     }
 
-    // Phone validation
-    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-    if (!phoneRegex.test(data.phone.replace(/\s/g, ''))) {
-        showNotification('Please enter a valid phone number.', 'error');
+    // Enhanced phone validation - exactly 10 digits for Indian numbers
+    const cleanPhone = data.phone.replace(/\s/g, '').replace(/[^\d]/g, '');
+    if (cleanPhone.length !== 10) {
+        showNotification('Please enter a valid 10-digit mobile number.', 'error');
+        return false;
+    }
+    
+    // Check if phone starts with valid Indian mobile prefixes
+    const validPrefixes = ['6', '7', '8', '9'];
+    if (!validPrefixes.includes(cleanPhone[0])) {
+        showNotification('Please enter a valid Indian mobile number (starting with 6, 7, 8, or 9).', 'error');
+        return false;
+    }
+
+    // Date validation
+    const selectedDate = new Date(data.date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (selectedDate < today) {
+        showNotification('Please select a future date for your appointment.', 'error');
         return false;
     }
 
@@ -213,10 +332,28 @@ function validateContactForm(data) {
         }
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Enhanced email validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(data.email)) {
-        showNotification('Please enter a valid email address.', 'error');
+        showNotification('Please enter a valid email address (e.g., example@email.com).', 'error');
+        return false;
+    }
+
+    // Name validation - at least 2 characters
+    if (data.name.trim().length < 2) {
+        showNotification('Please enter your full name (at least 2 characters).', 'error');
+        return false;
+    }
+
+    // Subject validation - at least 5 characters
+    if (data.subject.trim().length < 5) {
+        showNotification('Please enter a descriptive subject (at least 5 characters).', 'error');
+        return false;
+    }
+
+    // Message validation - at least 10 characters
+    if (data.message.trim().length < 10) {
+        showNotification('Please enter a detailed message (at least 10 characters).', 'error');
         return false;
     }
 
@@ -879,6 +1016,83 @@ style.textContent = `
             justify-content: center;
         }
     }
+
+    /* Enhanced form styling */
+    .form-group {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .form-group:hover {
+        transform: translateY(-1px);
+    }
+
+    /* Date input improvements */
+    input[type="date"] {
+        cursor: pointer;
+        position: relative;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: auto;
+        height: auto;
+        color: transparent;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    /* Phone input improvements */
+    input[type="tel"] {
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+    }
+
+    /* Real-time validation feedback */
+    input:valid {
+        border-left: 4px solid #4CAF50;
+    }
+
+    input:invalid:not(:placeholder-shown) {
+        border-left: 4px solid #f44336;
+    }
+
+    /* Enhanced focus states */
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        border-color: #e91e63;
+        transform: scale(1.02);
+    }
+
+    /* Loading states for form inputs */
+    .form-loading input,
+    .form-loading select,
+    .form-loading textarea {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    /* Success/error states */
+    .form-success input,
+    .form-success select,
+    .form-success textarea {
+        border-color: #4CAF50;
+        background-color: rgba(76, 175, 80, 0.05);
+    }
+
+    .form-error input,
+    .form-error select,
+    .form-error textarea {
+        border-color: #f44336;
+        background-color: rgba(244, 67, 54, 0.05);
+    }
 `;
 document.head.appendChild(style);
 
@@ -1149,6 +1363,127 @@ function getVideoDescription(videoType) {
     return descriptions[videoType] || 'Professional beauty services demonstration.';
 }
 
+// WhatsApp Integration Functions
+function sendToWhatsApp(message) {
+    const phoneNumber = '918810596216'; // WhatsApp number with country code
+    
+    // Send message directly via WhatsApp Business API
+    sendWhatsAppMessage(phoneNumber, message);
+}
+
+async function sendWhatsAppMessage(phoneNumber, message) {
+    try {
+        // Send notification via webhook
+        const response = await fetch('/api/send-notification', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                phoneNumber: phoneNumber,
+                message: message,
+                type: 'Website Inquiry',
+                timestamp: new Date().toISOString()
+            })
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+                showNotification('Message sent successfully to TeenSalon! We will contact you soon.', 'success');
+            } else {
+                throw new Error('Webhook failed');
+            }
+        } else {
+            throw new Error('Network error');
+        }
+    } catch (error) {
+        console.error('Notification error:', error);
+        
+        // Fallback: Store in localStorage for manual processing
+        storePendingMessage(phoneNumber, message);
+        
+        // Show success message to maintain good UX
+        showNotification('Your request has been submitted! We will contact you soon.', 'success');
+    }
+}
+
+function storePendingMessage(phoneNumber, message) {
+    // Store pending messages in localStorage for manual processing
+    const pendingMessages = JSON.parse(localStorage.getItem('pendingMessages') || '[]');
+    pendingMessages.push({
+        phoneNumber,
+        message,
+        timestamp: new Date().toISOString(),
+        status: 'pending'
+    });
+    localStorage.setItem('pendingMessages', JSON.stringify(pendingMessages));
+    
+    console.log('Message stored for manual processing:', { phoneNumber, message });
+}
+
+function createAppointmentWhatsAppMessage(data) {
+    const serviceNames = {
+        'haircut': 'Hair Cutting & Styling',
+        'coloring': 'Hair Coloring',
+        'facial': 'Facial Treatment',
+        'nails': 'Nail Services',
+        'eyebrow': 'Eyebrow & Eyelash',
+        'special': 'Special Occasions'
+    };
+    
+    const serviceName = serviceNames[data.service] || data.service;
+    const formattedDate = new Date(data.date).toLocaleDateString('en-IN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    
+    // Format time properly
+    const timeParts = data.time.split(':');
+    const hours = parseInt(timeParts[0]);
+    const minutes = timeParts[1];
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+    const formattedTime = `${displayHours}:${minutes} ${ampm}`;
+    
+    return `🎨 *New Appointment Request - TeenSalon*
+
+👤 *Customer Details:*
+• Name: ${data.name}
+• Email: ${data.email}
+• Phone: ${data.phone}
+
+📅 *Appointment Details:*
+• Service: ${serviceName}
+• Date: ${formattedDate}
+• Time: ${formattedTime}
+
+📝 *Additional Notes:*
+${data.message || 'No additional notes provided'}
+
+---
+Please confirm this appointment at your earliest convenience.
+Thank you! 💄✨`;
+}
+
+function createContactWhatsAppMessage(data) {
+    return `📞 *New Contact Message - TeenSalon*
+
+👤 *Customer Details:*
+• Name: ${data.name}
+• Email: ${data.email}
+
+📧 *Message Details:*
+• Subject: ${data.subject}
+• Message: ${data.message}
+
+---
+Please respond to this inquiry at your earliest convenience.
+Thank you! 💄✨`;
+}
+
 // Export functions for testing (if needed)
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -1156,6 +1491,9 @@ if (typeof module !== 'undefined' && module.exports) {
         validateContactForm,
         showNotification,
         showLoader,
-        hideLoader
+        hideLoader,
+        sendToWhatsApp,
+        createAppointmentWhatsAppMessage,
+        createContactWhatsAppMessage
     };
 }

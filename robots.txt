@@ -1,11 +1,8 @@
 User-agent: *
 Allow: /
 
-# Sitemaps
-Sitemap: https://teensalsi.com/sitemap.xml
-Sitemap: https://teensalsi.com/sitemap-minimal.xml
-Sitemap: https://teensalsi.com/sitemap-basic.xml
-Sitemap: https://teensalsi.com/sitemap.txt
+# Sitemap
+Sitemap: http://teensalsi.com/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1
@@ -45,4 +42,4 @@ Allow: /sitemap.xml
 Allow: /robots.txt
 
 # Host
-Host: https://teensalsi.com
+Host: http://teensalsi.com

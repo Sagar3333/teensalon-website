@@ -4,42 +4,9 @@ Allow: /
 # Sitemap
 Sitemap: http://teensalsi.com/sitemap.xml
 
-# Crawl-delay
-Crawl-delay: 1
-
-# Allow all search engines to crawl
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Slurp
-Allow: /
-
-User-agent: DuckDuckBot
-Allow: /
-
-User-agent: Baiduspider
-Allow: /
-
-User-agent: YandexBot
-Allow: /
-
 # Block specific paths if needed
 Disallow: /admin/
 Disallow: /private/
 Disallow: /temp/
 Disallow: /*.log$
 Disallow: /*.tmp$
-
-# Allow important files
-Allow: /images/
-Allow: /css/
-Allow: /js/
-Allow: /favicon.ico
-Allow: /sitemap.xml
-Allow: /robots.txt
-
-# Host
-Host: http://teensalsi.com

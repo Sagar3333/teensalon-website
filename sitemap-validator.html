@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Validator & Troubleshooter</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .test-section { background: #f5f5f5; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .success { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
+        .warning { color: #ffc107; font-weight: bold; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin: 10px 0; padding: 10px; border-radius: 3px; }
+        .result.success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .result.error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .result.warning { background: #fff3cd; border: 1px solid #ffeaa7; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Sitemap Validator & Troubleshooter</h1>
+        
+        <div class="test-section">
+            <h2>📋 Quick Tests</h2>
+            <button onclick="testSitemap('https://teensalsi.com/sitemap.xml')">Test Main Sitemap</button>
+            <button onclick="testSitemap('https://teensalsi.com/sitemap-simple.xml')">Test Simple Sitemap</button>
+            <button onclick="validateXML()">Validate XML Structure</button>
+            <div id="testResults"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>🛠️ Common Issues & Solutions</h2>
+            
+            <h3>Issue: "Sitemap could not be read"</h3>
+            <ul>
+                <li><strong>XML Formatting:</strong> Check for proper XML structure</li>
+                <li><strong>Encoding:</strong> Ensure UTF-8 encoding</li>
+                <li><strong>Server Headers:</strong> Verify content-type is application/xml</li>
+                <li><strong>File Permissions:</strong> Check file is readable (644)</li>
+                <li><strong>URL Accessibility:</strong> Ensure sitemap URL is accessible</li>
+            </ul>
+
+            <h3>Issue: "Couldn't fetch sitemap"</h3>
+            <ul>
+                <li><strong>Server Configuration:</strong> Check MIME types</li>
+                <li><strong>Firewall/Security:</strong> Ensure search engines can access</li>
+                <li><strong>HTTPS Issues:</strong> Verify SSL certificate</li>
+                <li><strong>Redirects:</strong> Check for redirect loops</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>✅ Validation Checklist</h2>
+            <div id="checklist">
+                <div class="checklist-item">
+                    <input type="checkbox" id="check1"> 
+                    <label for="check1">Sitemap accessible at https://teensalsi.com/sitemap.xml</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check2"> 
+                    <label for="check2">Returns HTTP 200 status code</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check3"> 
+                    <label for="check3">Content-Type: application/xml</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check4"> 
+                    <label for="check4">Valid XML structure</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check5"> 
+                    <label for="check5">UTF-8 encoding</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check6"> 
+                    <label for="check6">Listed in robots.txt</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔗 Testing URLs</h2>
+            <ul>
+                <li><a href="https://teensalsi.com/sitemap.xml" target="_blank">Main Sitemap</a></li>
+                <li><a href="https://teensalsi.com/sitemap-simple.xml" target="_blank">Simple Sitemap</a></li>
+                <li><a href="https://teensalsi.com/robots.txt" target="_blank">Robots.txt</a></li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>🌐 Online Validators</h2>
+            <ul>
+                <li><a href="https://www.xml-sitemaps.com/validate-xml-sitemap.html" target="_blank">XML Sitemap Validator</a></li>
+                <li><a href="https://search.google.com/search-console" target="_blank">Google Search Console</a></li>
+                <li><a href="https://www.bing.com/webmasters" target="_blank">Bing Webmaster Tools</a></li>
+                <li><a href="https://validator.w3.org/" target="_blank">W3C Markup Validator</a></li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>📊 Current Sitemap Structure</h2>
+            <pre id="sitemapStructure">
+Main Sitemap (sitemap.xml):
+├── https://teensalsi.com/ (priority: 1.0)
+├── https://teensalsi.com/#services (priority: 0.9)
+├── https://teensalsi.com/#gallery (priority: 0.8)
+├── https://teensalsi.com/#videos (priority: 0.7)
+├── https://teensalsi.com/#pricing (priority: 0.8)
+├── https://teensalsi.com/#testimonials (priority: 0.6)
+├── https://teensalsi.com/#booking (priority: 0.9)
+├── https://teensalsi.com/#contact (priority: 0.7)
+└── https://teensalsi.com/#premium-services (priority: 0.8)
+
+Simple Sitemap (sitemap-simple.xml):
+└── https://teensalsi.com/ (priority: 1.0)
+            </pre>
+        </div>
+    </div>
+
+    <script>
+        function testSitemap(url) {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<p>Testing ' + url + '...</p>';
+            
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        const contentType = response.headers.get('content-type');
+                        resultsDiv.innerHTML += '<div class="result success">✅ ' + url + ' is accessible (Status: ' + response.status + ')</div>';
+                        resultsDiv.innerHTML += '<div class="result ' + (contentType.includes('xml') ? 'success' : 'warning') + '">Content-Type: ' + contentType + '</div>';
+                        return response.text();
+                    } else {
+                        throw new Error('HTTP ' + response.status);
+                    }
+                })
+                .then(text => {
+                    if (text.includes('<?xml') && text.includes('<urlset')) {
+                        resultsDiv.innerHTML += '<div class="result success">✅ Valid XML structure detected</div>';
+                    } else {
+                        resultsDiv.innerHTML += '<div class="result error">❌ Invalid XML structure</div>';
+                    }
+                })
+                .catch(error => {
+                    resultsDiv.innerHTML += '<div class="result error">❌ Error: ' + error.message + '</div>';
+                });
+        }
+
+        function validateXML() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<p>Validating XML structure...</p>';
+            
+            // Basic XML validation
+            const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>https://teensalsi.com/</loc>
+<lastmod>2024-12-19</lastmod>
+<changefreq>weekly</changefreq>
+<priority>1.0</priority>
+</url>
+</urlset>`;
+            
+            try {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
+                const errorNode = xmlDoc.querySelector("parsererror");
+                
+                if (errorNode) {
+                    resultsDiv.innerHTML += '<div class="result error">❌ XML Parse Error: ' + errorNode.textContent + '</div>';
+                } else {
+                    resultsDiv.innerHTML += '<div class="result success">✅ XML structure is valid</div>';
+                }
+            } catch (error) {
+                resultsDiv.innerHTML += '<div class="result error">❌ XML Validation Error: ' + error.message + '</div>';
+            }
+        }
+
+        // Auto-check some items on load
+        window.onload = function() {
+            // You can add automatic checks here
+        };
+    </script>
+</body>
+</html>

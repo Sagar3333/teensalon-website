@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemaps
 Sitemap: https://teensalsi.com/sitemap.xml
+Sitemap: https://teensalsi.com/sitemap-simple.xml
 
 # Crawl-delay
 Crawl-delay: 1

@@ -8,16 +8,16 @@ RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
 # Proper MIME type for XML files
-<Files "sitemap.xml">
+<FilesMatch "sitemap.*\.xml$">
     Header set Content-Type "application/xml; charset=utf-8"
     Header set Cache-Control "public, max-age=3600"
-</Files>
+</FilesMatch>
 
-# Ensure sitemap.xml is accessible
-<Files "sitemap.xml">
+# Ensure sitemap files are accessible
+<FilesMatch "sitemap.*\.xml$">
     Order allow,deny
     Allow from all
-</Files>
+</FilesMatch>
 
 # Proper MIME types
 AddType application/xml .xml

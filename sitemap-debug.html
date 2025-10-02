@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Debug Tool</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        button { background: #007bff; color: white; padding: 10px 15px; margin: 5px; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .sitemap-list { background: #e9ecef; padding: 15px; border-radius: 5px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Sitemap Debug Tool</h1>
+    
+    <div class="sitemap-list">
+        <h2>📋 Available Sitemaps to Test:</h2>
+        <ul>
+            <li><strong>sitemap.xml</strong> - Standard sitemap (homepage only)</li>
+            <li><strong>sitemap-minimal.xml</strong> - Minimal version (no optional elements)</li>
+            <li><strong>sitemap-basic.xml</strong> - Basic version (no namespace)</li>
+            <li><strong>sitemap-nobom.xml</strong> - No BOM version (single line)</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>🧪 Quick Tests</h2>
+        <button onclick="testAllSitemaps()">Test All Sitemaps</button>
+        <button onclick="checkHeaders()">Check HTTP Headers</button>
+        <button onclick="validateXMLStructure()">Validate XML</button>
+        <button onclick="checkRobotsTxt()">Check robots.txt</button>
+    </div>
+
+    <div id="results"></div>
+
+    <div>
+        <h2>📊 Current Sitemap Contents</h2>
+        
+        <h3>sitemap.xml (Standard):</h3>
+        <pre><?xml version="1.0" encoding="UTF-8"?>
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+&lt;url&gt;
+&lt;loc&gt;https://teensalsi.com/&lt;/loc&gt;
+&lt;lastmod&gt;2024-12-19&lt;/lastmod&gt;
+&lt;changefreq&gt;weekly&lt;/changefreq&gt;
+&lt;priority&gt;1.0&lt;/priority&gt;
+&lt;/url&gt;
+&lt;/urlset&gt;</pre>
+
+        <h3>sitemap-minimal.xml (Minimal):</h3>
+        <pre><?xml version="1.0" encoding="UTF-8"?>
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+&lt;url&gt;
+&lt;loc&gt;https://teensalsi.com/&lt;/loc&gt;
+&lt;/url&gt;
+&lt;/urlset&gt;</pre>
+
+        <h3>sitemap-basic.xml (No Namespace):</h3>
+        <pre><?xml version="1.0" encoding="UTF-8"?>
+&lt;urlset&gt;
+&lt;url&gt;
+&lt;loc&gt;https://teensalsi.com/&lt;/loc&gt;
+&lt;/url&gt;
+&lt;/urlset&gt;</pre>
+
+        <h3>sitemap-nobom.xml (Single Line):</h3>
+        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;&lt;url&gt;&lt;loc&gt;https://teensalsi.com/&lt;/loc&gt;&lt;/url&gt;&lt;/urlset&gt;</pre>
+    </div>
+
+    <div>
+        <h2>🛠️ Troubleshooting Steps</h2>
+        <ol>
+            <li><strong>Test Direct Access:</strong> Click each sitemap link above</li>
+            <li><strong>Check HTTP Status:</strong> Should return 200 OK</li>
+            <li><strong>Verify Content-Type:</strong> Should be application/xml</li>
+            <li><strong>Validate XML:</strong> Use browser dev tools or online validators</li>
+            <li><strong>Check File Permissions:</strong> Ensure files are readable</li>
+            <li><strong>Clear Caches:</strong> Server, CDN, and browser caches</li>
+            <li><strong>Test Different Versions:</strong> Try minimal versions if standard fails</li>
+        </ol>
+    </div>
+
+    <div>
+        <h2>🔗 Direct Links for Testing</h2>
+        <ul>
+            <li><a href="https://teensalsi.com/sitemap.xml" target="_blank">sitemap.xml</a></li>
+            <li><a href="https://teensalsi.com/sitemap-minimal.xml" target="_blank">sitemap-minimal.xml</a></li>
+            <li><a href="https://teensalsi.com/sitemap-basic.xml" target="_blank">sitemap-basic.xml</a></li>
+            <li><a href="https://teensalsi.com/sitemap-nobom.xml" target="_blank">sitemap-nobom.xml</a></li>
+            <li><a href="https://teensalsi.com/robots.txt" target="_blank">robots.txt</a></li>
+        </ul>
+    </div>
+
+    <script>
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        async function testSitemap(url) {
+            try {
+                const response = await fetch(url);
+                const contentType = response.headers.get('content-type') || 'unknown';
+                
+                if (response.ok) {
+                    const text = await response.text();
+                    addResult(`✅ ${url} - Status: ${response.status}, Content-Type: ${contentType}`, 'success');
+                    
+                    if (text.includes('<?xml') && text.includes('<urlset')) {
+                        addResult(`✅ ${url} - Valid XML structure detected`, 'success');
+                    } else {
+                        addResult(`⚠️ ${url} - Unexpected content format`, 'warning');
+                    }
+                } else {
+                    addResult(`❌ ${url} - HTTP ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ ${url} - Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testAllSitemaps() {
+            clearResults();
+            addResult('🧪 Testing all sitemap versions...', 'info');
+            
+            const sitemaps = [
+                'https://teensalsi.com/sitemap.xml',
+                'https://teensalsi.com/sitemap-minimal.xml',
+                'https://teensalsi.com/sitemap-basic.xml',
+                'https://teensalsi.com/sitemap-nobom.xml'
+            ];
+            
+            for (const sitemap of sitemaps) {
+                await testSitemap(sitemap);
+            }
+        }
+
+        async function checkHeaders() {
+            clearResults();
+            addResult('🔍 Checking HTTP headers...', 'info');
+            
+            try {
+                const response = await fetch('https://teensalsi.com/sitemap.xml', { method: 'HEAD' });
+                const headers = {};
+                for (let [key, value] of response.headers.entries()) {
+                    headers[key] = value;
+                }
+                addResult(`📋 Headers: ${JSON.stringify(headers, null, 2)}`, 'info');
+            } catch (error) {
+                addResult(`❌ Header check failed: ${error.message}`, 'error');
+            }
+        }
+
+        function validateXMLStructure() {
+            clearResults();
+            addResult('🔍 Validating XML structure...', 'info');
+            
+            const xmlSamples = [
+                '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://teensalsi.com/</loc></url></urlset>',
+                '<?xml version="1.0" encoding="UTF-8"?><urlset><url><loc>https://teensalsi.com/</loc></url></urlset>'
+            ];
+            
+            xmlSamples.forEach((xml, index) => {
+                try {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xml, "text/xml");
+                    const errorNode = xmlDoc.querySelector("parsererror");
+                    
+                    if (errorNode) {
+                        addResult(`❌ XML Sample ${index + 1} - Parse Error: ${errorNode.textContent}`, 'error');
+                    } else {
+                        addResult(`✅ XML Sample ${index + 1} - Valid structure`, 'success');
+                    }
+                } catch (error) {
+                    addResult(`❌ XML Sample ${index + 1} - Validation Error: ${error.message}`, 'error');
+                }
+            });
+        }
+
+        async function checkRobotsTxt() {
+            clearResults();
+            addResult('🤖 Checking robots.txt...', 'info');
+            
+            try {
+                const response = await fetch('https://teensalsi.com/robots.txt');
+                if (response.ok) {
+                    const text = await response.text();
+                    const sitemapLines = text.split('\n').filter(line => line.toLowerCase().includes('sitemap:'));
+                    addResult(`✅ robots.txt accessible`, 'success');
+                    addResult(`📋 Sitemap entries found: ${sitemapLines.length}`, 'info');
+                    sitemapLines.forEach(line => {
+                        addResult(`📄 ${line.trim()}`, 'info');
+                    });
+                } else {
+                    addResult(`❌ robots.txt - HTTP ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ robots.txt check failed: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -3,7 +3,9 @@ Allow: /
 
 # Sitemaps
 Sitemap: https://teensalsi.com/sitemap.xml
-Sitemap: https://teensalsi.com/sitemap-simple.xml
+Sitemap: https://teensalsi.com/sitemap-minimal.xml
+Sitemap: https://teensalsi.com/sitemap-basic.xml
+Sitemap: https://teensalsi.com/sitemap.txt
 
 # Crawl-delay
 Crawl-delay: 1

@@ -38,9 +38,11 @@
     <link rel="manifest" href="site.webmanifest">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-minified.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -66,13 +68,20 @@
     <meta name="theme-color" content="#e91e63">
     <meta name="msapplication-TileColor" content="#e91e63">
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <!-- Google Analytics - Deferred -->
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
+        // Defer Google Analytics loading
+        window.addEventListener('load', function() {
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';
+            document.head.appendChild(script);
+            
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'GA_MEASUREMENT_ID');
+        });
     </script>
     
     <!-- Google Tag Manager -->
@@ -82,18 +91,21 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
     
-    <!-- Facebook Pixel -->
+    <!-- Facebook Pixel - Deferred -->
     <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'YOUR_PIXEL_ID');
-        fbq('track', 'PageView');
+        // Defer Facebook Pixel loading
+        window.addEventListener('load', function() {
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', 'YOUR_PIXEL_ID');
+            fbq('track', 'PageView');
+        });
     </script>
     <noscript><img height="1" width="1" style="display:none"
         src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
@@ -577,7 +589,7 @@
             <div class="gallery-grid">
                 <div class="gallery-item">
                     <div class="gallery-image">
-                        <img src="images/gallery/WhatsApp Image 2025-09-15 at 10.43.30_a39fb162.jpg" alt="TeenSalon Hair Styling Service" loading="lazy">
+                        <img src="images/gallery/WhatsApp Image 2025-09-15 at 10.43.30_a39fb162.jpg" alt="TeenSalon Hair Styling Service" loading="lazy" decoding="async">
                     </div>
                     <div class="gallery-overlay">
                         <h4>Professional Hair Styling</h4>
@@ -1488,6 +1500,26 @@
 
 
     <script src="script.js"></script>
+    <script src="performance-optimizer.js"></script>
+    
+    <!-- Performance Optimization Script -->
+    <script>
+        // Add lazy loading to all images without it
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img:not([loading])');
+            images.forEach(img => {
+                img.setAttribute('loading', 'lazy');
+                img.setAttribute('decoding', 'async');
+            });
+            
+            // Add lazy loading to videos
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.setAttribute('preload', 'none');
+                video.setAttribute('loading', 'lazy');
+            });
+        });
+    </script>
     
     <!-- Enhanced Analytics and Marketing Scripts -->
     <script>

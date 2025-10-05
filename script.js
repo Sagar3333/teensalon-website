@@ -1,19 +1,24 @@
 // DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Force HTTPS redirection
-    enforceHTTPS();
-    
-    // Initialize loader first
-    initLoader();
-    
-    // Initialize all functionality
-    initNavigation();
-    initScrollEffects();
-    initForms();
-    initAnimations();
-    initGallery();
-    initCounters();
-    initTestimonialsCarousel();
+    try {
+        // Initialize loader first
+        initLoader();
+        
+        // Initialize all functionality with error handling
+        initNavigation();
+        initScrollEffects();
+        initForms();
+        initAnimations();
+        initGallery();
+        initCounters();
+        initTestimonialsCarousel();
+        
+        // Force HTTPS redirection (after other initialization)
+        setTimeout(enforceHTTPS, 1000);
+    } catch (error) {
+        console.error('Error during initialization:', error);
+        // Continue with basic functionality even if some features fail
+    }
 });
 
 // HTTPS Enforcement Function
@@ -40,23 +45,29 @@ function enforceHTTPS() {
 
 // Navigation functionality
 function initNavigation() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-    const navLinks = document.querySelectorAll('.nav-link');
+    try {
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
 
-    // Mobile menu toggle
-    hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-    });
+        if (!hamburger || !navMenu) {
+            console.warn('Navigation elements not found');
+            return;
+        }
 
-    // Close mobile menu when clicking on a link
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
+        // Mobile menu toggle
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
         });
-    });
+
+        // Close mobile menu when clicking on a link
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
 
     // Navbar scroll effect
     window.addEventListener('scroll', function() {
@@ -70,56 +81,63 @@ function initNavigation() {
         }
     });
 
-    // Smooth scrolling for anchor links
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href.startsWith('#')) {
-                e.preventDefault();
-                const target = document.querySelector(href);
-                if (target) {
-                    const offsetTop = target.offsetTop - 80;
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
+        // Smooth scrolling for anchor links
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
                 }
-            }
+            });
         });
-    });
+    } catch (error) {
+        console.error('Navigation initialization error:', error);
+    }
 }
 
 // Scroll effects and animations
 function initScrollEffects() {
-    // Intersection Observer for fade-in animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+    try {
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
-                observer.unobserve(entry.target);
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        const animateElements = document.querySelectorAll('.service-card, .gallery-item, .pricing-card, .testimonial-card');
+        animateElements.forEach(el => {
+            observer.observe(el);
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
             }
         });
-    }, observerOptions);
-
-    // Observe elements for animation
-    const animateElements = document.querySelectorAll('.service-card, .gallery-item, .pricing-card, .testimonial-card');
-    animateElements.forEach(el => {
-        observer.observe(el);
-    });
-
-    // Parallax effect for hero section
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const hero = document.querySelector('.hero');
-        if (hero) {
-            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-        }
-    });
+    } catch (error) {
+        console.error('Scroll effects initialization error:', error);
+    }
 }
 
 // Form handling
